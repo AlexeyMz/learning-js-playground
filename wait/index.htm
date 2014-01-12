@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Wait Indicator Test</title>
+    <link rel="stylesheet" href="../css/main.css" type="text/css" />
+    <script src="../scripts/d3.v3.js"></script>
+    <script src="wait-indicator.js"></script>
+    <style type="text/css">
+        .svg-point {
+            stroke: black;
+        }
+    </style>
+</head>
+<body>
+    <h1>Wait Indicator Test</h1>
+    <div class="controls">
+        <input id="wait" type="button" value="Wait" />
+    </div>
+    <div id="info"></div>
+    <div id="content">
+        <svg id="canvas" width="900" height="500"
+             xmlns="http://www.w3.org/2000/svg">
+        </svg>
+    </div>
+    <script type="text/javascript">
+        var svg = d3.select("#canvas");
+        var r = 20;
+        var width = svg.attr("width"),
+            height = svg.attr("height"),
+            scaleX = d3.interpolate(r, width - 2 * r),
+            scaleY = d3.interpolate(r, height - 2 * r),
+            scaleColor = function (t) { return d3.hsl(t * 360, 0.8, 0.5); };
+
+        var circles = svg.selectAll("circle")
+                .data(d3.range(10))
+            .enter().append("circle")
+                .attr("class", "svg-point")
+                .attr("cx", scaleX(Math.random()))
+                .attr("cy", scaleY(Math.random()))
+                .attr("r", 20)
+                .attr("fill", function () { return scaleColor(Math.random()); })
+            .each(moveItem);
+
+        // добавляет повторяющуюся анимацию перемещения
+        // в случайную точку на #canvas
+        function moveItem() {
+            var item = d3.select(this);
+            (function repeat() {
+                item.transition()
+                    .duration("1000")
+                    .attr("cx", scaleX(Math.random()))
+                    .attr("cy", scaleY(Math.random()))
+                    .attr("fill", scaleColor(Math.random()))
+                    .each("end", repeat);
+            })();
+        };
+
+        d3.select("#wait").on("click", function () {
+            var button = this;
+            button.disabled = true;
+            var indicator = Indicator.create(svg);
+            setTimeout(function () {
+                indicator.stop();
+                button.disabled = false;
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

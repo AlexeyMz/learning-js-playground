@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>Javascript Apps (2014)</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css" />
+    <style media="screen" type="text/css">
+        #rain_background { display: none; }
+        body { overflow: hidden; }
+        .item_list { color: white; }
+        .item { font-size: larger; }
+		a.item:link { color: white; }
+        a.item:visited { color: white; }
+        a.item:hover { color: red; }
+        a.item:active { color: red; }
+    </style>
+    <script type="text/javascript" src="rainyday.js"></script>
+    <script type="text/javascript" src="test.js"></script>
+    <script type="text/javascript">
+        function raining() {
+            var engine = new RainyDay('rain_canvas', 'rain_background', window.innerWidth, window.innerHeight);
+            engine.gravity = engine.GRAVITY_NON_LINEAR;
+            engine.trail = engine.TRAIL_DROPS;
+
+            engine.rain([
+                engine.preset(0, 2, 500)
+            ]);
+
+            engine.rain([
+                engine.preset(3, 3, 0.88),
+                engine.preset(5, 5, 0.9),
+                engine.preset(6, 2, 1),
+            ], 100);
+        }
+    </script>
+</head>
+<body onload="raining()">
+    <h1 style="color: white;">Javascript Apps</h1>
+    <div id="content">
+        <ul class="item_list">
+            <li><a class="item" href="./factor/index.htm">Factorizator</a></li>
+            <li><a class="item" href="./moving/index.htm">Random Moving Model</a></li>
+            <li><a class="item" href="./graph/index.htm">Graph</a></li>
+            <li><a class="item" href="./wait/index.htm">Wait Indicator</a></li>
+        </ul>
+    </div>
+    <img id="rain_background" src="images/Winter_Palace.jpg" />
+    <canvas id="rain_canvas" style="position: absolute; top: 0px; left: 0px; z-index: -200;" />
+</body>
+</html>
